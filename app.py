@@ -141,7 +141,7 @@ The distempter has risen by {min(to_rise, 100 - Game.distempter)}%!
                 print(f"""You gave away just enough. The people are satisfied.
 The distempter has dropped by {min(5, Game.distempter)}%""")
                 Game.distempter -= min(5, Game.distempter)
-        Game.print_data()
+                
             else:
                 to_drop = (amount / Game.nation - 1) * 40
                 to_be_born = int(Game.nation * to_drop // 100)
@@ -151,6 +151,7 @@ The distempter has dropped by {min(to_drop, Game.distempter)}%!
                 Game.distempter -= min(to_drop, Game.distempter)
                 Game.nation *= (1 + to_drop // 100)
             Game.grain -= amount
+            Game.print_data()
         else:
             print(f"The people are furious!")
             to_rise = min(40, 100 - Game.distempter)
