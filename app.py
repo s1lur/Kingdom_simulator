@@ -6,7 +6,10 @@ class Utilities:
     def sanitize_yn(question):
         ch = input(question + " (y/n): ").lower()
         while ch not in ["y", "n"]:
-            ch = input("Please input 'y' or 'n'. " + question + " (y/n): ").lower()
+            ch = input(
+                "Please input 'y' or 'n'. " +
+                question +
+                " (y/n): ").lower()
         return ch
 
     @staticmethod
@@ -81,7 +84,7 @@ class Game:
             print("All the people died so you lost.")
         elif Game.land == 0:
             exit(0)
-            print("You have no land left. You lost.")     
+            print("You have no land left. You lost.")
 
     #==========Controlled events==========#
 
@@ -95,7 +98,8 @@ class Game:
         if ch == "y":
             price = random.randint(1, 10)
             print(f"The price is {price}")
-            amount = Utilities.sanitize_number("How much do you want to sell?", Game.grain)
+            amount = Utilities.sanitize_number(
+                "How much do you want to sell?", Game.grain)
             print("Aa-a-a-and sold!")
             Game.money += price * amount
             Game.grain -= amount
@@ -104,7 +108,8 @@ class Game:
             if ch == "y":
                 price = random.randint(3, 15)
                 print(f"The price is {price}")
-                amount = Utilities.sanitize_number("How much do you want to buy?", Game.money / price)
+                amount = Utilities.sanitize_number(
+                    "How much do you want to buy?", Game.money / price)
                 print("Congrats on your purchase!")
                 Game.money -= price * amount
                 Game.grain += amount
@@ -117,9 +122,11 @@ class Game:
             ch = "n"
             print("You have no grain, so you are not able to give anything away.")
         else:
-            ch = Utilities.sanitize_yn("Do you want to give away some of your grain?")
+            ch = Utilities.sanitize_yn(
+                "Do you want to give away some of your grain?")
         if ch == "y":
-            amount = Utilities.sanitize_number("How much do you want to give away?", Game.grain)
+            amount = Utilities.sanitize_number(
+                "How much do you want to give away?", Game.grain)
             if amount < Game.nation:
                 to_rise = (1 - amount / Game.nation) * 40
                 print(f"""You gave away too little!
@@ -154,9 +161,10 @@ The distempter has dropped by {min(to_drop, Game.distempter)}%!
         if Game.money == 0:
             print("You have no money, so you cannot invest into propaganda.")
             return
-        ch = Utilities.sanitize_yn("Do you want to invest some money into propaganda?")
+        ch = Utilities.sanitize_yn(
+            "Do you want to invest some money into propaganda?")
         if ch == "y":
-            amount = Utilities.sanitize_number(\
+            amount = Utilities.sanitize_number(
                 "How much do you want to invest?", Game.money)
             to_drop = min(int(amount / 1000), Game.distempter)
             print(f"Good job! The distempter has dropped by {to_drop}%!")
@@ -171,10 +179,11 @@ The distempter has dropped by {min(to_drop, Game.distempter)}%!
             ch = "n"
             print("You have no grain, so you cannot seed anything.")
         else:
-            ch = Utilities.sanitize_yn("Do you want to seed some of your grain?")
+            ch = Utilities.sanitize_yn(
+                "Do you want to seed some of your grain?")
         if ch == "y":
-            amount = Utilities.sanitize_number("How much do you want to seed?",\
-                min(Game.grain, Game.land * 5))
+            amount = Utilities.sanitize_number("How much do you want to seed?",
+                                               min(Game.grain, Game.land * 5))
             to_collect = round(random.random(), 1) + 1.5
             Game.grown_last_year = to_collect * amount
         else:
@@ -186,7 +195,8 @@ The distempter has dropped by {min(to_drop, Game.distempter)}%!
     def collect():
         Game.grain += Game.grown_last_year
         if Game.grown_last_year > 0:
-            print(f"You collected {Game.grown_last_year} grain from last year's seeding!")
+            print(
+                f"You collected {Game.grown_last_year} grain from last year's seeding!")
         Game.check_lose()
 
     #==========Random events==========#
@@ -222,7 +232,8 @@ The distempter has dropped by {min(to_drop, Game.distempter)}%!
     def heritage():
         if random.random() <= 0.07:
             to_earn = random.randint(1, 5) * 10000
-            print(f"One of your relatives has recently passed away. You have inherited {to_earn} gold!")
+            print(
+                f"One of your relatives has recently passed away. You have inherited {to_earn} gold!")
             Game.money += to_earn
         Game.print_data()
         Game.check_lose()
@@ -245,28 +256,34 @@ The distempter has dropped by {min(to_drop, Game.distempter)}%!
             ch = Utilities.sanitize_yn("Do you want to surrender immediately?")
             if ch == "y":
                 to_lose = random.randint(30, 70)
-                print(f"You have lost {min(to_lose, Game.land)} units of land.")
+                print(
+                    f"You have lost {min(to_lose, Game.land)} units of land.")
                 Game.land -= min(Game.land, to_lose)
             else:
-                army = Utilities.sanitize_number("How much army do you want to hire (1 unit = 1000 gold)?",\
-                    Game.money / 1000)
+                army = Utilities.sanitize_number(
+                    "How much army do you want to hire (1 unit = 1000 gold)?", Game.money / 1000)
                 if random.random() <= 1 - 1 / ((0.1 * army + 1) ** (army / 2)):
                     print("You have won the war!")
-                    to_earn_money = (round(random.random(), 2) * 2.2 + 1.8) * army * 1000
+                    to_earn_money = (round(random.random(), 2)
+                                     * 2.2 + 1.8) * army * 1000
                     to_earn_land = random.randint(40, 90)
-                    print(f"You have earned {to_earn_money} gold and {to_earn_land} units of land!")
-                    print(f"The distempter has dropped by {min(Game.distempter, 5)}%!")
+                    print(
+                        f"You have earned {to_earn_money} gold and {to_earn_land} units of land!")
+                    print(
+                        f"The distempter has dropped by {min(Game.distempter, 5)}%!")
                     Game.distempter -= min(Game.distempter, 5)
                     Game.money += to_earn_money
                     Game.land += to_earn_land
                 else:
                     print("You have lost the war.")
-                    to_lose_money = min((round(random.random(), 2) * 2.2 + 1.8)\
-                        * army * 1000, Game.money)
+                    to_lose_money = min((round(random.random(), 2) * 2.2 + 1.8)
+                                        * army * 1000, Game.money)
                     to_lose_land = min(random.randint(40, 90), Game.land)
                     to_raise_distempter = min(100 - Game.distempter, 5)
-                    print(f"You have lost {to_lose_money} gold and {to_lose_land} units of land.")
-                    print(f"The distempter has raised by {to_raise_distempter}%.")
+                    print(
+                        f"You have lost {to_lose_money} gold and {to_lose_land} units of land.")
+                    print(
+                        f"The distempter has raised by {to_raise_distempter}%.")
                     Game.distempter += to_raise_distempter
                     Game.money -= to_lose_money
                     Game.land -= to_lose_land
@@ -276,16 +293,19 @@ The distempter has dropped by {min(to_drop, Game.distempter)}%!
     @staticmethod
     def expedition():
         if random.random() <= 0.15:
-            ch = Utilities.sanitize_yn("""Your people have gathered an expedition to explore new lands!
+            ch = Utilities.sanitize_yn(
+                """Your people have gathered an expedition to explore new lands!
 Do you want to invest in it?""")
             if ch == "y":
-                amount = Utilities.sanitize_number("How much do you want to pay?", Game.money)
+                amount = Utilities.sanitize_number(
+                    "How much do you want to pay?", Game.money)
                 x = amount / 2000
                 if random.random() <= 1 - 1 / ((0.1 * x + 1) ** (x / 2)):
                     to_earn_grain = random.randint(40, 100) * 10
                     to_earn_land = random.randint(10, 25)
                     to_earn_nation = random.randint(8, 20) * 10
-                    print(f"""Your expedition has discovered new populated lands!
+                    print(
+                        f"""Your expedition has discovered new populated lands!
 The settlements turned out to be peaceful and gave the explorers some grain!
 You have earned {to_earn_grain} grain, {to_earn_land} units of land and {to_earn_nation} population!""")
                     Game.nation += to_earn_nation
