@@ -103,6 +103,7 @@ class Game:
             print("Aa-a-a-and sold!")
             Game.money += price * amount
             Game.grain -= amount
+            Game.print_data()
         elif Game.money != 0:
             ch = Utilities.sanitize_yn("Do want to buy some grain?")
             if ch == "y":
@@ -113,7 +114,8 @@ class Game:
                 print("Congrats on your purchase!")
                 Game.money -= price * amount
                 Game.grain += amount
-        Game.print_data()
+                Game.print_data()
+        
         Game.check_lose()
 
     @staticmethod
@@ -139,7 +141,7 @@ The distempter has risen by {min(to_rise, 100 - Game.distempter)}%!
                 print(f"""You gave away just enough. The people are satisfied.
 The distempter has dropped by {min(5, Game.distempter)}%""")
                 Game.distempter -= min(5, Game.distempter)
-
+        Game.print_data()
             else:
                 to_drop = (amount / Game.nation - 1) * 40
                 to_be_born = int(Game.nation * to_drop // 100)
@@ -151,9 +153,10 @@ The distempter has dropped by {min(to_drop, Game.distempter)}%!
             Game.grain -= amount
         else:
             print(f"The people are furious!")
-            print(f"The distempter has risen by {min(40, Game.distempter)}%!")
-            Game.distempter += min(40, 100 - Game.distempter)
-        Game.print_data()
+            to_rise = min(40, 100 - Game.distempter)
+            print(f"The distempter has risen by {to_rise}%!")
+            Game.distempter += to_rise
+            Game.print_data()
         Game.check_lose()
 
     @staticmethod
@@ -170,7 +173,7 @@ The distempter has dropped by {min(to_drop, Game.distempter)}%!
             print(f"Good job! The distempter has dropped by {to_drop}%!")
             Game.distempter -= to_drop
             Game.money -= amount
-        Game.print_data()
+            Game.print_data()
         Game.check_lose()
 
     @staticmethod
@@ -186,9 +189,11 @@ The distempter has dropped by {min(to_drop, Game.distempter)}%!
                                                min(Game.grain, Game.land * 5))
             to_collect = round(random.random(), 1) + 1.5
             Game.grown_last_year = to_collect * amount
+            Game.grain -= amount
+            Game.print_data()
         else:
             Game.grown_last_year = 0
-        Game.print_data()
+        
         Game.check_lose()
 
     @staticmethod
@@ -197,6 +202,7 @@ The distempter has dropped by {min(to_drop, Game.distempter)}%!
         if Game.grown_last_year > 0:
             print(
                 f"You collected {Game.grown_last_year} grain from last year's seeding!")
+            Game.print_data()
         Game.check_lose()
 
     #==========Random events==========#
@@ -208,7 +214,7 @@ The distempter has dropped by {min(to_drop, Game.distempter)}%!
         if random.random() <= chance:
             print("There was an epidemic! 10% of your population has died!")
             Game.nation = int(0.9 * Game.nation)
-        Game.print_data()
+            Game.print_data()
         Game.check_lose()
 
     @staticmethod
@@ -216,7 +222,7 @@ The distempter has dropped by {min(to_drop, Game.distempter)}%!
         if random.random() <= 0.2:
             print("Rats have eaten 30% of your grain!")
             Game.grain = int(Game.grain * 0.7)
-        Game.print_data()
+            Game.print_data()
         Game.check_lose()
 
     @staticmethod
@@ -225,7 +231,7 @@ The distempter has dropped by {min(to_drop, Game.distempter)}%!
         if random.random() <= x ** 3:
             print("Thieves have stolen 20% of your money!")
             Game.money = int(Game.money * 0.8)
-        Game.print_data()
+            Game.print_data()
         Game.check_lose()
 
     @staticmethod
@@ -235,7 +241,7 @@ The distempter has dropped by {min(to_drop, Game.distempter)}%!
             print(
                 f"One of your relatives has recently passed away. You have inherited {to_earn} gold!")
             Game.money += to_earn
-        Game.print_data()
+            Game.print_data()
         Game.check_lose()
 
     @staticmethod
@@ -244,7 +250,7 @@ The distempter has dropped by {min(to_drop, Game.distempter)}%!
         if random.random() <= (0.7 - 0.7 * (x ** (x + 1.2))):
             print("There was a demographic boom! Your population has increased by 15%!")
             Game.nation = int(Game.nation * 1.15)
-        Game.print_data()
+            Game.print_data()
         Game.check_lose()
 
     #==========Half random events==========#
@@ -287,7 +293,7 @@ The distempter has dropped by {min(to_drop, Game.distempter)}%!
                     Game.distempter += to_raise_distempter
                     Game.money -= to_lose_money
                     Game.land -= to_lose_land
-        Game.print_data()
+            Game.print_data()
         Game.check_lose()
 
     @staticmethod
@@ -313,7 +319,7 @@ You have earned {to_earn_grain} grain, {to_earn_land} units of land and {to_earn
                     Game.grain += to_earn_grain
                 else:
                     print("The expedition was lost in the wilds.")
-        Game.print_data()
+            Game.print_data()
         Game.check_lose()
 
 
